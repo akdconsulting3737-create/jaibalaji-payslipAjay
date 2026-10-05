@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jai Bala Ji Traders - Payslip Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #2c3e50;
+            padding-bottom: 12px;
+            margin-bottom: 20px;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #1a365d;
+            text-transform: uppercase;
+        }
+        .header p {
+            margin: 4px 0;
+            font-size: 12px;
+            color: #555;
+        }
+        .title-bar {
+            background-color: #e2e8f0;
+            text-align: center;
+            font-weight: bold;
+            padding: 6px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f8fafc;
+            font-weight: bold;
+        }
+        input {
+            width: 95%;
+            padding: 4px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        .num-input {
+            text-align: right;
+        }
+        .section-header {
+            background-color: #f1f5f9;
+            font-weight: bold;
+        }
+        .net-pay-box {
+            background-color: #f8fafc;
+            border: 2px solid #1a365d;
+            padding: 12px;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        .footer-note {
+            margin-top: 25px;
+            font-size: 11px;
+            color: #666;
+            text-align: center;
+        }
+        .no-print {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn {
+            background-color: #2563eb;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        .btn:hover {
+            background-color: #1d4ed8;
+        }
+
+        @media print {
+            body {
+                background-color: #fff;
+                padding: 0;
+            }
+            .container {
+                border: none;
+                box-shadow: none;
+                width: 100%;
+                padding: 0;
+            }
+            .no-print {
+                display: none;
+            }
+            input {
+                border: none;
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="no-print">
+        <button class="btn" onclick="window.print()">Print / Save as PDF</button>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>JAI BALA JI TRADERS</h1>
+            <p>Specialist in: Supply of Engineering Equipments, Assembly, Fabrication & Erection</p>
+            <p>Mirzapur, New Sabji Mandi, P.O. Bairiya, Dist- Ballia, UP - 277201 | Cell: 9996608590</p>
+        </div>
+
+        <div class="title-bar">
+            PAYSLIP FOR THE MONTH OF <input type="text" value="APRIL 2026" style="width: 150px; font-weight: bold; text-align: center;">
+        </div>
+
+        <!-- Employee Info -->
+        <table>
+            <tr>
+                <td width="20%"><strong>Employee Name:</strong></td>
+                <td width="30%"><input type="text" value="Employee Name"></td>
+                <td width="20%"><strong>Employee ID:</strong></td>
+                <td width="30%"><input type="text" value="JBT-001"></td>
+            </tr>
+            <tr>
+                <td><strong>Designation:</strong></td>
+                <td><input type="text" value="Technician / Executive"></td>
+                <td><strong>Date Joined:</strong></td>
+                <td><input type="date" value="2025-04-01"></td>
+            </tr>
+            <tr>
+                <td><strong>Bank Name:</strong></td>
+                <td><input type="text" value="State Bank of India"></td>
+                <td><strong>Payment Mode:</strong></td>
+                <td><input type="text" value="Bank Transfer"></td>
+            </tr>
+            <tr>
+                <td><strong>Bank A/C No:</strong></td>
+                <td><input type="text" value="33700000000"></td>
+                <td><strong>PAN Number:</strong></td>
+                <td><input type="text" value="ABCDE1234F"></td>
+            </tr>
+        </table>
+
+        <!-- Work Days -->
+        <table>
+            <tr class="section-header">
+                <td>Total Days: <input type="number" id="totalDays" value="30" class="num-input" style="width: 50px;" oninput="calculateSalary()"></td>
+                <td>Worked Days: <input type="number" id="workedDays" value="30" class="num-input" style="width: 50px;" oninput="calculateSalary()"></td>
+                <td>Loss of Pay Days: <input type="number" id="lopDays" value="0" class="num-input" style="width: 50px;" oninput="calculateSalary()"></td>
+            </tr>
+        </table>
+
+        <!-- Earnings and Deductions Table -->
+        <table>
+            <thead>
+                <tr class="section-header">
+                    <th width="35%">EARNINGS</th>
+                    <th width="15%" style="text-align: right;">AMOUNT (₹)</th>
+                    <th width="35%">DEDUCTIONS</th>
+                    <th width="15%" style="text-align: right;">AMOUNT (₹)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Basic Salary</td>
+                    <td><input type="number" id="basic" value="10000" class="num-input" oninput="calculateSalary()"></td>
+                    <td>Professional Tax</td>
+                    <td><input type="number" id="ptax" value="130" class="num-input" oninput="calculateSalary()"></td>
+                </tr>
+                <tr>
+                    <td>House Rent Allowance (HRA)</td>
+                    <td><input type="number" id="hra" value="4000" class="num-input" oninput="calculateSalary()"></td>
+                    <td>Advance / Other Deductions</td>
+                    <td><input type="number" id="advance" value="0" class="num-input" oninput="calculateSalary()"></td>
+                </tr>
+                <tr>
+                    <td>Conveyance Allowance</td>
+                    <td><input type="number" id="conveyance" value="1500" class="num-input" oninput="calculateSalary()"></td>
+                    <td>TDS / Income Tax</td>
+                    <td><input type="number" id="tds" value="0" class="num-input" oninput="calculateSalary()"></td>
+                </tr>
+                <tr>
+                    <td>Special Allowance</td>
+                    <td><input type="number" id="special" value="2500" class="num-input" oninput="calculateSalary()"></td>
+                    <td>-</td>
+                    <td>-</td>
+                </tr>
+                <tr style="font-weight: bold; background-color: #f8fafc;">
+                    <td>Total Earnings (A)</td>
+                    <td id="totalEarnings" style="text-align: right;">18,000.00</td>
+                    <td>Total Deductions (B)</td>
+                    <td id="totalDeductions" style="text-align: right;">130.00</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Net Payable -->
+        <div class="net-pay-box">
+            <strong>NET SALARY PAYABLE (A - B):</strong> ₹ <span id="netSalary" style="font-size: 16px; font-weight: bold;">17,870.00</span><br>
+            <span style="font-style: italic; font-size: 13px;">In Words: <span id="netSalaryWords">Seventeen Thousand Eight Hundred Seventy Rupees Only</span></span>
+        </div>
+
+        <br><br>
+        <!-- Signatures -->
+        <table style="border: none; margin-top: 30px;">
+            <tr style="border: none;">
+                <td style="border: none; text-align: left; width: 50%;"><br><br>____________________<br>Employee Signature</td>
+                <td style="border: none; text-align: right; width: 50%;"><br><br>____________________<br><strong>JAI BALA JI TRADERS</strong><br>(Authorized Signatory)</td>
+            </tr>
+        </table>
+
+        <div class="footer-note">
+            * This is a computer-generated salary statement.
+        </div>
+    </div>
+
+    <script>
+        function numberToWords(num) {
+            const a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+            const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+            
+            if ((num = num.toString()).length > 9) return 'Overflow';
+            let n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+            if (!n) return ''; 
+            let str = '';
+            str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Lakh ' : '';
+            str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Thousand ' : '';
+            str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Hundred ' : '';
+            str += (n[4] != 0 || n[5] != 0) ? ((str != '') ? 'and ' : '') : '';
+            str += (n[5] != 0) ? (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) : '';
+            return str.trim() ? str.trim() + ' Rupees Only' : 'Zero Rupees Only';
+        }
+
+        function calculateSalary() {
+            let basic = parseFloat(document.getElementById('basic').value) || 0;
+            let hra = parseFloat(document.getElementById('hra').value) || 0;
+            let conveyance = parseFloat(document.getElementById('conveyance').value) || 0;
+            let special = parseFloat(document.getElementById('special').value) || 0;
+
+            let ptax = parseFloat(document.getElementById('ptax').value) || 0;
+            let advance = parseFloat(document.getElementById('advance').value) || 0;
+            let tds = parseFloat(document.getElementById('tds').value) || 0;
+
+            let totalE = basic + hra + conveyance + special;
+            let totalD = ptax + advance + tds;
+            let net = totalE - totalD;
+
+            document.getElementById('totalEarnings').innerText = totalE.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('totalDeductions').innerText = totalD.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('netSalary').innerText = net.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('netSalaryWords').innerText = numberToWords(Math.round(net));
+        }
+
+        calculateSalary();
+    </script>
+</body>
+</html>
